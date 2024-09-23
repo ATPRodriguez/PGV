@@ -2,8 +2,8 @@ package es.ies.puerto;
 
 import java.io.IOException;
 
-/*
-//Escribe un programa que use ProcessBuilder para ejecutar el comando ping a una dirección IP o un dominio (por ejemplo, google.com). El programa debe capturar y mostrar la salida del proceso en la consola.
+/**
+/ Escribe un programa que use ProcessBuilder para ejecutar el comando ping a una dirección IP o un dominio (por ejemplo, google.com). El programa debe capturar y mostrar la salida del proceso en la consola.
 */
 public class Ejercicio1 {
 
