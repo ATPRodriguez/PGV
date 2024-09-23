@@ -1,0 +1,6 @@
+total 16
+-rw-rw-r-- 1 dam dam  280 sep 19 14:56 Ejercicio1.iml
+-rw-rw-r-- 1 dam dam    0 sep 23 20:14 ex3.txt
+-rw-rw-r-- 1 dam dam 2848 sep 23 19:43 pom.xml
+drwxrwxr-x 3 dam dam 4096 sep 19 14:55 src
+drwxrwxr-x 4 dam dam 4096 sep 19 15:25 target
