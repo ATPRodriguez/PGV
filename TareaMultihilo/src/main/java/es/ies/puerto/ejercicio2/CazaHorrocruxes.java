@@ -65,7 +65,7 @@ public class CazaHorrocruxes implements Runnable{
         Thread ron = new Thread(new CazaHorrocruxes("Ron Wisley", azkhaban,
                 (random.nextInt(10) +1) * 1000));
         Thread harry = new Thread(new CazaHorrocruxes("Harry Potter", hogwarts,
-                (random.nextInt(30) +1) * 1000));
+                (random.nextInt(10) +1) * 1000));
 
         hermione.start();
         ron.start();
