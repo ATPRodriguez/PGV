@@ -1,4 +1,4 @@
-package es.ies.puerto;
+package es.ies.puerto.ejercicio1;
 
 import java.util.Random;
 

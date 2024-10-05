@@ -28,6 +28,7 @@ public class CazaHorrocruxes implements Runnable{
         this.timeMax = timeMax;
     }
 
+    @Override
     public void run() {
         Random random = new Random();
         while (pasos < region.getDistanciaHorrocrux() && !found) {
