@@ -31,4 +31,14 @@ public class RegionTest {
         Assertions.assertEquals(region.getNombre(), nombreTest, ERROR_MSG);
         Assertions.assertEquals(region.getHorrocrux(), true);
     }
+
+    @Test
+    public void equalsTest() {
+        Region region1 = new Region(nombreTest);
+        Region region2 = new Region(nombreTest);
+        Region region3 = new Region("nombre");
+        Assertions.assertEquals(region1, region2, ERROR_MSG);
+        Assertions.assertNotEquals(region1, region3, ERROR_MSG);
+        Assertions.assertNotEquals(region1, "nombre", ERROR_MSG);
+    }
 }

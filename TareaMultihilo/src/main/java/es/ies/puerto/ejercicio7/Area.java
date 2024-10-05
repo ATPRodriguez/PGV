@@ -6,7 +6,6 @@ public class Area {
     private String nombre;
     private boolean saved = false;
 
-
     public Area() {
         nombre = "";
     }
