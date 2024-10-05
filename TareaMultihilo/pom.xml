@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>es.ies.puerto</groupId>
-  <artifactId>ejercicio-logica-I</artifactId>
+  <artifactId>Tarea-Multihilo</artifactId>
   <version>1.0</version>
 
   <properties>

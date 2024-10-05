@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class FabricaDroides implements Runnable {
     private String nombre;
-    private static ArrayList<Droide> droides = new ArrayList<>();
+    static ArrayList<Droide> droides = new ArrayList<>();
 
     public FabricaDroides(String nombre) {
         this.nombre = nombre;
