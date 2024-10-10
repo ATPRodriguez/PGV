@@ -1,4 +1,4 @@
-package es.ies.puerto;
+package es.ies.puerto.modelo;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -6,26 +6,26 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameMap {
-    private int[][] map;
+    private char[][] map;
     private int size;
     private ConcurrentHashMap<String, String> locations;
-    private final static int defaultSize = 10;
+    private final static int DEFAULT_SIZE = 10;
 
     public GameMap() {
-        map = new int[defaultSize][defaultSize];
-        size = defaultSize;
+        size = DEFAULT_SIZE;
+        map = new char[size][size];
         locations = new ConcurrentHashMap<>();
     }
 
     public GameMap(int size) {
         this.size = size;
-        this.map = new int[this.size][this.size];
+        this.map = new char[this.size][this.size];
         locations = new ConcurrentHashMap<>();
     }
 
     public GameMap(int size, ConcurrentHashMap<String, String> ubicaciones) {
         this.size = size;
-        this.map = new int[this.size][this.size];
+        this.map = new char[this.size][this.size];
         this.locations = ubicaciones;
     }
 
@@ -43,23 +43,37 @@ public class GameMap {
 
     public String generateLocation() {
         Random random = new Random();
-        int locationX = new Random().nextInt(size);
-        int locationY = new Random().nextInt(size);
+        int locationX = random.nextInt(size);
+        int locationY = random.nextInt(size);
         return locationX+","+locationY;
     }
 
     public void moveHunter(Hunter hunter, String newLocation) {
-        Random random = new Random();
+        String[] posicion = hunter.getLocation().split(",");
+        map[Integer.parseInt(posicion[0])][Integer.parseInt(posicion[1])] = ' ';
         hunter.setLocation(newLocation);
         locations.replace(hunter.getHunterName(), hunter.getLocation(), newLocation);
+        posicion = hunter.getLocation().split(",");
+        map[Integer.parseInt(posicion[0])][Integer.parseInt(posicion[1])] = 'C';
+    }
+
+    public void addHunter(Hunter hunter, String location) {
+        locations.put(hunter.getHunterName(), location);
+        String[] posiciones = location.split(",");
+        map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = 'C';
     }
 
     public void addMonster(Monster monster, String location) {
-            locations.put(monster.getMonsterName(), location);
+        locations.put(monster.getMonsterName(), location);
+        String[] posiciones = location.split(",");
+        map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = 'M';
     }
 
     public void removeMonster(Monster monster, String location) {
         locations.remove(monster.getMonsterName(), location);
+        String[] posiciones = location.split(",");
+        map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = ' ';
+
     }
 
     public int move(int location) {
@@ -98,15 +112,23 @@ public class GameMap {
 
     @Override
     public String toString() {
-        final char celdaVacia = '·';
-        final char cazador = 'C';
-        final char monstruo = 'M';
-        String resultado = "";
+        String mensaje = "";
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                String position = i+","+j;
+                switch (map[i][j]) {
+                    case 'C':
+                        mensaje += "C   ";
+                        break;
+                    case 'M':
+                        mensaje += "M   ";
+                        break;
+                    default:
+                        mensaje += "·   ";
+                        break;
+                }
             }
+            mensaje += "\n";
         }
-        return resultado;
+        return mensaje;
     }
 }

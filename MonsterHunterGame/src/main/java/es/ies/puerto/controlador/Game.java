@@ -1,4 +1,8 @@
-package es.ies.puerto;
+package es.ies.puerto.controlador;
+
+import es.ies.puerto.modelo.GameMap;
+import es.ies.puerto.modelo.Hunter;
+import es.ies.puerto.modelo.Monster;
 
 public class Game {
     private GameMap gameMap;
@@ -45,6 +49,22 @@ public class Game {
         Hunter hunter1 = new Hunter("Hunter1");
         Monster monster1 = new Monster("Monster1");
         Game game = new Game(5, hunter1, monster1);
+        generarUbicaciones(game);
+        while (hunter1.getLocation().equals(monster1.getLocation())) {
+            generarUbicaciones(game);
+        }
+        game.getGameMap().addHunter(hunter1, hunter1.getLocation());
+        game.getGameMap().addMonster(monster1, monster1.getLocation());
+        System.out.println(game.getGameMap());
+        game.getGameMap().moveHunter(hunter1, "2,1");
+        System.out.println(game.getGameMap());
+
+    }
+
+    public static boolean generarUbicaciones(Game game) {
+        game.getHunter().setLocation(game.getGameMap().generateLocation());
+        game.getMonster().setLocation(game.getGameMap().generateLocation());
+        return true;
     }
 
     /**
