@@ -45,7 +45,10 @@ public class Game {
         this.monster = monster;
     }
 
-    public static void main(String[] args) {
+
+
+
+    public static void main(String[] args) throws InterruptedException {
         Hunter hunter1 = new Hunter("Hunter1");
         Monster monster1 = new Monster("Monster1");
         Game game = new Game(5, hunter1, monster1);
@@ -55,10 +58,10 @@ public class Game {
         }
         game.getGameMap().addHunter(hunter1, hunter1.getLocation());
         game.getGameMap().addMonster(monster1, monster1.getLocation());
-        System.out.println(game.getGameMap());
-        game.getGameMap().moveHunter(hunter1, "2,1");
-        System.out.println(game.getGameMap());
 
+        hunter1.setGameMap(game.getGameMap());
+        hunter1.start();
+        hunter1.join();
     }
 
     public static boolean generarUbicaciones(Game game) {

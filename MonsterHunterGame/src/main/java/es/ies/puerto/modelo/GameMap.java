@@ -10,6 +10,7 @@ public class GameMap {
     private int size;
     private ConcurrentHashMap<String, String> locations;
     private final static int DEFAULT_SIZE = 10;
+    private static int monsters = 0;
 
     public GameMap() {
         size = DEFAULT_SIZE;
@@ -41,6 +42,14 @@ public class GameMap {
         this.locations = locations;
     }
 
+    public static int getMonsters() {
+        return monsters;
+    }
+
+    public static void setMonsters(int monsters) {
+        GameMap.monsters = monsters;
+    }
+
     public String generateLocation() {
         Random random = new Random();
         int locationX = random.nextInt(size);
@@ -67,18 +76,19 @@ public class GameMap {
         locations.put(monster.getMonsterName(), location);
         String[] posiciones = location.split(",");
         map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = 'M';
+        monsters++;
     }
 
-    public void removeMonster(Monster monster, String location) {
+    public void huntMonster(Monster monster, String location) {
         locations.remove(monster.getMonsterName(), location);
         String[] posiciones = location.split(",");
         map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = ' ';
-
+        monsters--;
     }
 
     public int move(int location) {
         Random random = new Random();
-        if (location > 0) {
+        if (location > 0 && location != size) {
             switch (random.nextInt(3)) {
                 case 0:
                     location--;
@@ -89,6 +99,8 @@ public class GameMap {
                 default:
                     break;
             }
+        } else if (location == size && !random.nextBoolean()) {
+            location--;
         } else if (random.nextBoolean()) {
             location++;
         }

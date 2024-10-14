@@ -5,15 +5,29 @@ import java.util.Objects;
 public class Hunter extends Thread{
     private String hunterName;
     private String location;
+    private GameMap gameMap;
 
     public Hunter () {
         hunterName = "";
         location = "";
+        gameMap = new GameMap();
     }
 
     public Hunter (String hunterName) {
         this.hunterName = hunterName;
         location = "";
+        gameMap = new GameMap();
+    }
+
+    public Hunter (String hunterName, String location) {
+        this.hunterName = hunterName;
+        this.location = location;
+        this.gameMap = new GameMap();
+    }
+
+    public Hunter (String hunterName, int size) {
+        this.hunterName = hunterName;
+        this.gameMap = new GameMap(size);
     }
 
     public String getHunterName() {
@@ -32,9 +46,30 @@ public class Hunter extends Thread{
         this.location = location;
     }
 
+    public GameMap getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
     @Override
     public void run() {
-
+        while (GameMap.getMonsters() > 0) {
+            String[] locations = this.getLocation().split(",");
+            //int locationX = Integer.parseInt(locations[0]);
+            //int locationY = Integer.parseInt(locations[1]);
+            //locationX = gameMap.move(locationX);
+            //locationY = gameMap.move(locationY);
+            gameMap.moveHunter(this, gameMap.generateLocation());
+            System.out.println(gameMap);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
