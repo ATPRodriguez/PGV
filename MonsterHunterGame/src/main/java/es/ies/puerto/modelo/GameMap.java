@@ -1,5 +1,6 @@
 package es.ies.puerto.modelo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
@@ -10,24 +11,27 @@ public class GameMap {
     private int size;
     private ConcurrentHashMap<String, String> locations;
     private final static int DEFAULT_SIZE = 10;
-    private static int monsters = 0;
+    private static ArrayList<Monster> monsters;
 
     public GameMap() {
         size = DEFAULT_SIZE;
         map = new char[size][size];
         locations = new ConcurrentHashMap<>();
+        monsters = new ArrayList<>();
     }
 
     public GameMap(int size) {
         this.size = size;
         this.map = new char[this.size][this.size];
         locations = new ConcurrentHashMap<>();
+        monsters = new ArrayList<>();
     }
 
     public GameMap(int size, ConcurrentHashMap<String, String> ubicaciones) {
         this.size = size;
         this.map = new char[this.size][this.size];
         this.locations = ubicaciones;
+        monsters = new ArrayList<>();
     }
 
     public int getMap() {
@@ -42,11 +46,11 @@ public class GameMap {
         this.locations = locations;
     }
 
-    public static int getMonsters() {
+    public static ArrayList<Monster> getMonsters() {
         return monsters;
     }
 
-    public static void setMonsters(int monsters) {
+    public static void setMonsters(ArrayList<Monster> monsters) {
         GameMap.monsters = monsters;
     }
 
@@ -76,14 +80,14 @@ public class GameMap {
         locations.put(monster.getMonsterName(), location);
         String[] posiciones = location.split(",");
         map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = 'M';
-        monsters++;
+        monsters.add(monster);
     }
 
     public void huntMonster(Monster monster, String location) {
         locations.remove(monster.getMonsterName(), location);
         String[] posiciones = location.split(",");
         map[Integer.parseInt(posiciones[0])][Integer.parseInt(posiciones[1])] = ' ';
-        monsters--;
+        monsters.remove(monster);
     }
 
     public int move(int location) {

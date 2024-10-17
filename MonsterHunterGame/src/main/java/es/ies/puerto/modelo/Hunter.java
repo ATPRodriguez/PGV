@@ -8,21 +8,15 @@ public class Hunter extends Thread{
     private GameMap gameMap;
 
     public Hunter () {
-        hunterName = "";
-        location = "";
+        hunterName = "hunter";
+        location = "0,0";
         gameMap = new GameMap();
     }
 
     public Hunter (String hunterName) {
         this.hunterName = hunterName;
-        location = "";
+        location = "0,0";
         gameMap = new GameMap();
-    }
-
-    public Hunter (String hunterName, String location) {
-        this.hunterName = hunterName;
-        this.location = location;
-        this.gameMap = new GameMap();
     }
 
     public Hunter (String hunterName, int size) {
@@ -56,13 +50,13 @@ public class Hunter extends Thread{
 
     @Override
     public void run() {
-        while (GameMap.getMonsters() > 0) {
+        while (!GameMap.getMonsters().isEmpty()) {
             String[] locations = this.getLocation().split(",");
-            //int locationX = Integer.parseInt(locations[0]);
-            //int locationY = Integer.parseInt(locations[1]);
-            //locationX = gameMap.move(locationX);
-            //locationY = gameMap.move(locationY);
-            gameMap.moveHunter(this, gameMap.generateLocation());
+            int locationX = Integer.parseInt(locations[0]);
+            int locationY = Integer.parseInt(locations[1]);
+            locationX = gameMap.move(locationX);
+            locationY = gameMap.move(locationY);
+            gameMap.moveHunter(this, locationX+","+locationY);
             System.out.println(gameMap);
             try {
                 Thread.sleep(1000);
