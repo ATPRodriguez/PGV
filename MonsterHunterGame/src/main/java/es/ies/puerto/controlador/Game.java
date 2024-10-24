@@ -1,25 +1,27 @@
+
 package es.ies.puerto.controlador;
 
-import es.ies.puerto.modelo.GameMap;
 import es.ies.puerto.modelo.Hunter;
+import es.ies.puerto.modelo.GameMap;
 import es.ies.puerto.modelo.Monster;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 public class Game {
-    private GameMap gameMap;
-    private Hunter hunter;
-    private Monster monster;
+
+    GameMap gameMap;
+    List<Monster> monstersList;
+    List<Hunter> huntersList;
 
     public Game() {
         gameMap = new GameMap();
-        hunter = new Hunter();
-        monster = new Monster();
+        monstersList = new ArrayList<>();
+        huntersList = new ArrayList<>();
     }
 
-    public Game(int mapSize, Hunter hunter, Monster monster) {
-        this.gameMap = new GameMap(mapSize);
-        this.hunter = hunter;
-        this.monster = monster;
-    }
 
     public GameMap getGameMap() {
         return gameMap;
@@ -29,49 +31,66 @@ public class Game {
         this.gameMap = gameMap;
     }
 
-    public Hunter getHunter() {
-        return hunter;
+    public List<Monster> getMonstersList() {
+        return monstersList;
     }
 
-    public void setHunter(Hunter hunter) {
-        this.hunter = hunter;
+    public void setMonstersList(List<Monster> monstersList) {
+        this.monstersList = monstersList;
     }
 
-    public Monster getMonster() {
-        return monster;
+    public List<Hunter> getHuntersList() {
+        return huntersList;
     }
 
-    public void setMonster(Monster monster) {
-        this.monster = monster;
+    public void setHuntersList(List<Hunter> huntersList) {
+        this.huntersList = huntersList;
     }
 
 
+    public static void main(String[] args) {
+        GameMap gameMap = new GameMap(5);
 
+        Monster monster1 = new Monster("monster1", gameMap.generateLocations());
+        Monster monster2 = new Monster("monster2", gameMap.generateLocations());
 
-    public static void main(String[] args) throws InterruptedException {
-        Hunter hunter1 = new Hunter("Hunter1");
-        Monster monster1 = new Monster("Monster1");
-        Game game = new Game(5, hunter1, monster1);
-        generarUbicaciones(game);
-        while (hunter1.getLocation().equals(monster1.getLocation())) {
-            generarUbicaciones(game);
-        }
+        Hunter hunter1 = new Hunter("hunter1", gameMap);
+        Hunter hunter2 = new Hunter("hunter2", gameMap);
+
+        hunter1.setGameMap(gameMap);
+        hunter2.setGameMap(gameMap);
+
+        monster1.setGameMap(gameMap);
+        monster2.setGameMap(gameMap);
+
+        List<Monster> monsterList = new ArrayList<>(List.of(monster1, monster2));
+        List<Hunter> hunterList = new ArrayList<>(List.of(hunter1, hunter2));
+
+        Game game = new Game();
+        game.setGameMap(gameMap);
+        game.setHuntersList(hunterList);
+        game.setMonstersList(monsterList);
+
+        hunter1.setLocation(gameMap.generateLocations());
+        hunter2.setLocation(gameMap.generateLocations());
+
         game.getGameMap().addHunter(hunter1, hunter1.getLocation());
+        game.getGameMap().addHunter(hunter2, hunter2.getLocation());
+
         game.getGameMap().addMonster(monster1, monster1.getLocation());
+        game.getGameMap().addMonster(monster2, monster2.getLocation());
 
-        hunter1.setGameMap(game.getGameMap());
-        hunter1.start();
-        hunter1.join();
+        Thread hunterThread = new Thread(hunter1);
+        Thread hunter2Thread = new Thread(hunter2);
+
+        Thread monsterThread = new Thread(monster1);
+        Thread monster2Thread = new Thread(monster2);
+
+        hunterThread.start();
+        hunter2Thread.start();
+
+        monsterThread.start();
+        monster2Thread.start();
+
     }
-
-    public static boolean generarUbicaciones(Game game) {
-        game.getHunter().setLocation(game.getGameMap().generateLocation());
-        game.getMonster().setLocation(game.getGameMap().generateLocation());
-        return true;
-    }
-
-    /**
-     * TODO
-     * Metodo rastrearMonstruo() : si el monstruo esta en una casilla adyacente se mueve directamente a esta
-     */
 }

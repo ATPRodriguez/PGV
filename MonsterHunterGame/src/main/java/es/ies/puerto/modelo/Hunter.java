@@ -2,40 +2,27 @@ package es.ies.puerto.modelo;
 
 import java.util.Objects;
 
-public class Hunter extends Thread{
+public class Hunter extends Thread {
     private String hunterName;
     private String location;
     private GameMap gameMap;
+    private static long TIME = 10000;
 
-    public Hunter () {
+
+    public Hunter (){
         hunterName = "";
-        location = "";
+        location ="0,0";
         gameMap = new GameMap();
     }
 
-    public Hunter (String hunterName) {
+    public Hunter(String hunterName, GameMap gameMap) {
         this.hunterName = hunterName;
-        location = "";
-        gameMap = new GameMap();
-    }
-
-    public Hunter (String hunterName, String location) {
-        this.hunterName = hunterName;
-        this.location = location;
-        this.gameMap = new GameMap();
-    }
-
-    public Hunter (String hunterName, int size) {
-        this.hunterName = hunterName;
-        this.gameMap = new GameMap(size);
+        location = "0,0";
+        this.gameMap = gameMap;
     }
 
     public String getHunterName() {
         return hunterName;
-    }
-
-    public void setHunterName(String name) {
-        this.hunterName = name;
     }
 
     public String getLocation() {
@@ -56,21 +43,54 @@ public class Hunter extends Thread{
 
     @Override
     public void run() {
-        while (GameMap.getMonsters() > 0) {
-            String[] locations = this.getLocation().split(",");
-            //int locationX = Integer.parseInt(locations[0]);
-            //int locationY = Integer.parseInt(locations[1]);
-            //locationX = gameMap.move(locationX);
-            //locationY = gameMap.move(locationY);
-            gameMap.moveHunter(this, gameMap.generateLocation());
-            System.out.println(gameMap);
+        long initialTime = System.currentTimeMillis();
+        long timePassed = 0;
+
+        boolean gameOver = false;
+
+        gameMap.addHunter(this, this.getLocation());
+
+        while (!gameOver && !gameMap.getMonsters().isEmpty() && timePassed < TIME) {
+            gameMap.moveHunter(this);
+
+            long endTime = System.currentTimeMillis();
+            timePassed = (endTime - initialTime);
+
+            if (timePassed >= TIME){
+                System.out.println("Time's up!");
+                gameOver = true;
+            }
+
+
+            for (Monster monster : gameMap.getMonsters()) {
+                if (monster.getLocation().equals(this.getLocation()) && !monster.isCatched()) {
+                    monster.setCatched(true);
+                    System.out.println(getHunterName() + " caught " + monster.getMonsterName());
+                    gameMap.huntMonster(gameMap.getMonsters(), this);
+                    gameMap.getMonsters().remove(monster);
+                    break;
+                }
+            }
+
+            for (Monster monster : gameMap.getMonsters()) {
+                if (!monster.isCatched() && timePassed >= 50000 && timePassed < TIME) {
+                    gameMap.huntMonster(gameMap.getMonsters(), this);
+                    System.out.println(monster.getMonsterName() + " has fled");
+                }
+            }
+
+
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                System.out.println(hunterName + " interrupted");
             }
         }
     }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -87,6 +107,10 @@ public class Hunter extends Thread{
 
     @Override
     public String toString() {
-        return  hunterName + " is on the " + location + "square";
+        return "Hunter{" +
+                "hunterName='" + hunterName + '\'' +
+                ", position='" + location + '\'' +
+                '}';
     }
+
 }
