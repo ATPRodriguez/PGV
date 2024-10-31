@@ -1,23 +1,16 @@
 package es.ies.puerto.ejercicios.cuatro;
 
-import es.ies.puerto.ejercicios.uno.Servidor1;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
-public class Servidor4 {
-
+public class ChatServer {
     private static final Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
         System.out.println("Servidor de chat iniciado...");
-        int port = 1234;
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(12345)) {
             while (true) {
                 new ClientHandler(serverSocket.accept()).start();
             }

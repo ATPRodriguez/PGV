@@ -3,6 +3,8 @@ package es.ies.puerto.ejercicios.uno;
 import java.io.*;
 import java.net.*;
 
+import static java.lang.System.out;
+
 public class Cliente1 {
     public static void main(String[] args) {
         String host = "localhost";

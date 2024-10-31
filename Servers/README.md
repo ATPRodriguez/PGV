@@ -52,7 +52,23 @@ Implementa un servidor de chat donde múltiples clientes puedan conectarse y cha
 
 Gestionar múltiples conexiones simultáneas con Thread y enviar datos a varios clientes.
 
+Clientes:
+
+- 1   
+<img src="./img/Tarea4Cliente1.png"/>
+
+- 2   
+  <img src="./img/Tarea4Cliente2.png"/>
+
+- 3   
+  <img src="./img/Tarea4Cliente3.png"/>
+
+Servidor:
+
+<img src="./img/Tarea4Server.png"/>
+
 ### 5.- Servidor de Archivos con Transferencia de Datos Binaria <a name="5"></a>
 Crea un servidor que permita a un cliente solicitar un archivo especificando su nombre. El servidor debe buscar el archivo en su directorio local y, si lo encuentra, enviarlo al cliente. El cliente debe guardar el archivo recibido en su sistema y mostrar un mensaje con el contenido del fichero y cuando lo ha recibido.
+
 
 </div>

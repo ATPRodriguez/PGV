@@ -3,7 +3,7 @@ package es.ies.puerto.ejercicios.cuatro;
 import java.io.*;
 import java.net.*;
 
-public class Cliente4 {
+public class ChatClient {
     public static void main(String[] args) {
         System.out.println("Cliente de chat iniciado...");
         try (Socket socket = new Socket("localhost", 12345);
