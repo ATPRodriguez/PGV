@@ -1,21 +1,29 @@
 package es.ies.puerto.ejercicios.cuatro;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatServer {
     private static final Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
+    public static void main(String[] args) throws IOException {
+        System.out.println("Iniciando Servidor...");
+        ServerSocket serverSocket = new ServerSocket(12345);
+        startServer(serverSocket);
+    }
 
-    public static void main(String[] args) {
-        System.out.println("Servidor de chat iniciado...");
-        try (ServerSocket serverSocket = new ServerSocket(12345)) {
-            while (true) {
+    public static void startServer(ServerSocket serverSocket){
+        while (true) {
+            try {
                 new ClientHandler(serverSocket.accept()).start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -39,6 +47,7 @@ public class ChatServer {
                     System.out.println("Mensaje recibido: " + message);
                     sendMessageToAllClients(message);
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

@@ -1,63 +1,98 @@
 package es.ies.puerto.ejercicios.tres;
 
-import es.ies.puerto.ejercicios.uno.Servidor1;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Servidor3 extends Servidor1 {
+public class Servidor3 {
     public static void main(String[] args) throws IOException {
         int port = 1234;
         ServerSocket serverSocket = new ServerSocket(port);
-        System.out.println("Servidor escuchando en el puerto " + port);
+        System.out.println("Server escuchando en el puerto: " + port);
 
+        startCalculatorServer(serverSocket);
+    }
+
+    public static void startCalculatorServer(ServerSocket serverSocket){
         while (true) {
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Cliente conectado: " + clientSocket.getInetAddress());
+            Socket clientSocket = null;
+            try {
+                clientSocket = serverSocket.accept();
+                System.out.println("Cliente conectado: " + clientSocket.getInetAddress());
 
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            String message;
-            while ((message = in.readLine()) != null) {
-                System.out.println("Recibido: " + message);
-                if (message.equalsIgnoreCase("salir")) {
-                    out.println("Saliendo...");
+                String mensaje;
+
+
+                while ((mensaje = in.readLine()) != null) {
+                    String [] messageSplit = mensaje.split(" ");
+                    int counter = 0;
+                    List<Float> resultsList  = new ArrayList<>();
+
+                    for (String s : messageSplit) {
+                        if (esDigito(s)) {
+                            resultsList.add(Float.parseFloat(s));
+                            counter++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (counter == messageSplit.length){
+                        float result = calcular(resultsList);
+
+                        System.out.println("Recibido: " + result );
+                        out.println("Respuesta: " + result);
+                    } else {
+                        System.out.println("Recibido: " + mensaje);
+                        out.println("Respuesta: " + mensaje);
+                    }
+
+
                 }
-                if (!correctFormat(message)) {
-                    out.println("Se deben introducir dos valores numericos y ningun caracter alfabetico");
-                } else {
-                    String[] numeros = message.split(" ");
-                    int numero1 = Integer.parseInt(numeros[0]);
-                    int numero2 = Integer.parseInt(numeros[1]);
 
-                    out.println("Eco: " + (numero1 + numero2));
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            } finally {
+                try {
+                    if (clientSocket != null){
+                        clientSocket.close();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-
-            clientSocket.close();
         }
     }
 
-    public static boolean correctFormat(String string) {
-        if (string == null) {
-            return false;
-        }
-        String[] numeros = string.split(" ");
-        if (!(numeros.length == 2)) {
-            return false;
-        }
-        try {
-            Float.parseFloat(numeros[0]);
-            Float.parseFloat(numeros[1]);
-        } catch (NumberFormatException e) {
+    public static boolean esDigito(String mensaje) {
+        if (mensaje == null) {
             return false;
         }
 
+        try {
+            Float.parseFloat(mensaje);
+        } catch (NumberFormatException e) {
+            return false;
+        }
         return true;
+    }
+
+    public static float calcular(List<Float> resultados){
+        float resultado = 0;
+        for (Float index : resultados){
+            resultado += index;
+        }
+
+        return resultado;
     }
 }

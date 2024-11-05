@@ -70,5 +70,11 @@ Servidor:
 ### 5.- Servidor de Archivos con Transferencia de Datos Binaria <a name="5"></a>
 Crea un servidor que permita a un cliente solicitar un archivo especificando su nombre. El servidor debe buscar el archivo en su directorio local y, si lo encuentra, enviarlo al cliente. El cliente debe guardar el archivo recibido en su sistema y mostrar un mensaje con el contenido del fichero y cuando lo ha recibido.
 
+Cliente:   
 
+<img src="./img/Tarea5Cliente.png"/>
+
+Servidor:   
+
+<img src="./img/Tarea5Server.png"/>
 </div>
