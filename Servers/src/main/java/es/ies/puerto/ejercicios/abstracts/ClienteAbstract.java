@@ -17,7 +17,7 @@ public abstract class ClienteAbstract {
             String userInput;
             while ((userInput = console.readLine()) != null) {
                 out.println(userInput);
-                System.out.println("Server's response: " + in.readLine());
+                System.out.println("Respuesta del servidor: " + in.readLine());
             }
 
         } catch (IOException e) {
@@ -40,9 +40,9 @@ public abstract class ClienteAbstract {
 
             Thread readThread = new Thread(() -> {
                 try {
-                    String response;
-                    while ((response = in.readLine()) != null) {
-                        System.out.println("Message: " + response);
+                    String respuesta;
+                    while ((respuesta = in.readLine()) != null) {
+                        System.out.println("Mensage: " + respuesta);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

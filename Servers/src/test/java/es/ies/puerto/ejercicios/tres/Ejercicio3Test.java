@@ -1,6 +1,5 @@
-package es.ies.puerto.ejercicios.uno;
+package es.ies.puerto.ejercicios.tres;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,7 @@ import java.net.Socket;
 
 import static org.mockito.Mockito.*;
 
-public class Cliente1Test {
+public class Ejercicio3Test {
 
     private Socket mockClientSocket;
     private Socket mockServerSocket;
@@ -28,11 +27,10 @@ public class Cliente1Test {
 
         when(mockServer.accept()).thenReturn(mockServerSocket);
 
-
-        clientInputStream = new ByteArrayInputStream("test\nparar\n".getBytes());
+        clientInputStream = new ByteArrayInputStream("1 2\nparar\n".getBytes());
         clientOutputStream = new ByteArrayOutputStream();
 
-        serverInputStream = new ByteArrayInputStream("Received: test\n".getBytes());
+        serverInputStream = new ByteArrayInputStream("3.0\n".getBytes());
         serverOutputStream = new ByteArrayOutputStream();
 
         when(mockClientSocket.getOutputStream()).thenReturn(clientOutputStream);
@@ -43,19 +41,20 @@ public class Cliente1Test {
     }
 
     @Test
-    public void testClientServerCommunication() throws InterruptedException {
+    public void clientTest() throws InterruptedException {
         Thread serverThread = new Thread(() -> {
-                Servidor1.startServer(mockServer);
+            Servidor3.startCalculatorServer(mockServer);
         });
         serverThread.start();
 
         Thread clientThread = new Thread(() -> {
-            Cliente1.startClient(mockClientSocket);
+            Cliente3.startClient(mockClientSocket);
         });
 
         clientThread.start();
 
-        clientThread.join(1000);
         serverThread.join(1000);
+        clientThread.join(1000);
+
     }
 }

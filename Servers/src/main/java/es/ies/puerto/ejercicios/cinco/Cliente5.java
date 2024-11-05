@@ -13,10 +13,10 @@ public class Cliente5{
 
         Socket socket = new Socket(host, port);
 
-        startServer(socket);
+        startCliente(socket);
     }
 
-    public static void startServer(Socket socket){
+    public static void startCliente(Socket socket){
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             InputStream in = socket.getInputStream();

@@ -45,7 +45,7 @@ public class ChatServer {
                 String message;
                 while ((message = in.readLine()) != null) {
                     System.out.println("Mensaje recibido: " + message);
-                    sendMessageToAllClients(message);
+                    mandarMensaje(message);
                 }
 
             } catch (IOException e) {
@@ -60,7 +60,7 @@ public class ChatServer {
             }
         }
 
-        private void sendMessageToAllClients(String message) {
+        private void mandarMensaje(String message) {
             for (PrintWriter writer : clientWriters) {
                 writer.println(message);
             }
