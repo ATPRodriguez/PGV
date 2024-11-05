@@ -1,6 +1,7 @@
 
 package es.ies.puerto.controlador;
 
+import es.ies.puerto.modelo.Cave;
 import es.ies.puerto.modelo.Hunter;
 import es.ies.puerto.modelo.GameMap;
 import es.ies.puerto.modelo.Monster;
@@ -56,6 +57,11 @@ public class Game {
 
         Hunter hunter1 = new Hunter("hunter1", gameMap);
         Hunter hunter2 = new Hunter("hunter2", gameMap);
+
+        Cave cave = new Cave();
+        cave.setPosition("2,2");
+
+        gameMap.addCave(cave, cave.getPosition());
 
         hunter1.setGameMap(gameMap);
         hunter2.setGameMap(gameMap);

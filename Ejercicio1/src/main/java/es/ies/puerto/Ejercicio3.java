@@ -2,7 +2,6 @@ package es.ies.puerto;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Escribe un programa que ejecute un comando del sistema (por ejemplo, ls o dir), capture su salida y la redirija a un archivo de texto.
@@ -17,7 +16,7 @@ import java.io.OutputStream;
 public class Ejercicio3 {
     public static void main(String[] args) {
         ProcessBuilder pb = new ProcessBuilder("echo \"Soy un comando redirigido\"".split(" "));
-        File file = new File("/src/main/resources");
+        File file = new File("ex3.txt");
         try {
             Process proceso = pb.redirectOutput(file).start();
 

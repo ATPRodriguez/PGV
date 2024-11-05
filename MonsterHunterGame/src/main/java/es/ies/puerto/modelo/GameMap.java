@@ -11,6 +11,7 @@ public class GameMap {
     private String [][] map;
     private List<Hunter> hunters;
     private List<Monster> monsters;
+    private List<Cave> caves;
     private ConcurrentHashMap<String, String> locations;
     private static final int DEFAULT_SIZE = 10;
 
@@ -18,6 +19,7 @@ public class GameMap {
         size = DEFAULT_SIZE;
         monsters = new ArrayList<>();
         hunters = new ArrayList<>();
+        caves = new ArrayList<>();
         locations = new ConcurrentHashMap<>();
         map = new String[size][size];
         fillMap();
@@ -27,6 +29,7 @@ public class GameMap {
         this.size = size;
         monsters = new ArrayList<>();
         hunters = new ArrayList<>();
+        caves = new ArrayList<>();
         locations = new ConcurrentHashMap<>();
         map = new String[size][size];
         fillMap();
@@ -70,6 +73,14 @@ public class GameMap {
 
     public void setHunters(List<Hunter> hunters) {
         this.hunters = hunters;
+    }
+
+    public List<Cave> getCaves() {
+        return caves;
+    }
+
+    public void setCaves(List<Cave> caves) {
+        this.caves = caves;
     }
 
     public String generateLocations(){
@@ -131,6 +142,7 @@ public class GameMap {
                 break;
             }
             case " H ":
+            case " C ":
                 moveHunter(hunter);
                 break;
         }
@@ -234,6 +246,19 @@ public class GameMap {
         }
     }
 
+    public void addCave(Cave cave, String location){
+        if (checkPositionsOverlap(location)) {
+            String[] positions = location.split(",");
+            int row = Integer.parseInt(positions[0]);
+            int col = Integer.parseInt(positions[1]);
+
+            map[row][col] = " C ";
+
+            locations.put(cave.getId(), location);
+            caves.add(cave);
+        }
+    }
+
     public boolean checkPositionsOverlap(String position){
         return !locations.containsValue(position);
     }
@@ -255,7 +280,6 @@ public class GameMap {
     public synchronized void huntMonster(List<Monster> monsters, Hunter hunter) {
         for (Monster monster : monsters) {
             if (hunter.getLocation().equals(monster.getLocation())) {
-                System.out.println(hunter.getName() + " caught " + monster.getMonsterName());
                 monster.setCatched(true);
                 locations.remove(monster.getMonsterName());
                 monsters.remove(monster);
